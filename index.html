@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Matrix Quiz</title>
+  <script src="https://cdn.jsdelivr.net/npm/mathjs@11.11.1/lib/browser/math.js"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+  <div class="bg-white p-6 rounded-xl shadow-xl w-full max-w-2xl">
+    <h1 class="text-2xl font-bold mb-4 text-center">Matrix Theory Quiz</h1>
+    <form id="quizForm" class="space-y-6">
+      <!-- Questions will be dynamically inserted here -->
+    </form>
+    <div class="text-center mt-6">
+      <button type="button" onclick="checkAnswers()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Submit</button>
+    </div>
+    <div id="result" class="text-center text-lg font-semibold mt-4"></div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: 'What is the result of multiplying a 2x3 matrix by a 3x2 matrix?',
+        options: ['2x2', '3x3', '3x2', '2x3'],
+        answer: 0
+      },
+      {
+        question: 'Given A is 2x2 and B is 2x3, what is the size of A * B?',
+        options: ['2x3', '3x2', '2x2', '3x3'],
+        answer: 0
+      },
+      {
+        question: 'Condition to multiply A (m×n) and B (p×q) matrices?',
+        options: ['m = p', 'n = p', 'n = q', 'm = q'],
+        answer: 1
+      },
+      {
+        question: 'A is 3x1, B is 1x4. What is A × B?',
+        options: ['3x4', '1x3', '4x4', '3x1'],
+        answer: 0
+      },
+      {
+        question: 'What is the determinant of \( \begin{bmatrix}2 & 3 \\ 1 & 4\end{bmatrix} \)?',
+        options: ['11', '5', '7', '2'],
+        answer: 0
+      },
+      {
+        question: 'Which matrix has an inverse?',
+        options: [
+          'Matrix with determinant = 0',
+          'Matrix with linearly dependent rows',
+          'Matrix with full rank',
+          'Singular matrix'
+        ],
+        answer: 2
+      },
+      {
+        question: 'The inverse of a matrix A satisfies:',
+        options: [
+          'A * A = I',
+          'A * A⁻¹ = I',
+          'A⁻¹ * 0 = A',
+          'A⁻¹ * A⁻¹ = I'
+        ],
+        answer: 1
+      },
+      {
+        question: 'Factorization of a matrix often refers to:',
+        options: [
+          'Finding the inverse',
+          'Diagonalization',
+          'Solving equations',
+          'Computing eigenvalues'
+        ],
+        answer: 1
+      },
+      {
+        question: 'Which one is not a common matrix factorization?',
+        options: [
+          'LU decomposition',
+          'QR decomposition',
+          'XYZ decomposition',
+          'Cholesky decomposition'
+        ],
+        answer: 2
+      },
+      {
+        question: 'If \( \text{det}(A) = 0 \), then matrix A is:',
+        options: ['Invertible', 'Orthogonal', 'Singular', 'Symmetric'],
+        answer: 2
+      }
+    ];
+
+    function loadQuiz() {
+      const form = document.getElementById('quizForm');
+      questions.forEach((q, i) => {
+        const fieldset = document.createElement('fieldset');
+        fieldset.classList.add('space-y-2');
+        fieldset.innerHTML = `
+          <legend class="font-medium">${i + 1}. ${q.question}</legend>
+          ${q.options.map((opt, j) => `
+            <label class="flex items-center">
+              <input type="radio" name="q${i}" value="${j}" class="mr-2">
+              ${opt}
+            </label>
+          `).join('')}
+        `;
+        form.appendChild(fieldset);
+      });
+      MathJax.typeset();
+    }
+
+    function checkAnswers() {
+      const form = document.getElementById('quizForm');
+      let score = 0;
+      questions.forEach((q, i) => {
+        const answer = form[`q${i}`].value;
+        if (parseInt(answer) === q.answer) {
+          score++;
+        }
+      });
+      document.getElementById('result').textContent = `You scored ${score} out of ${questions.length}`;
+    }
+
+    window.onload = loadQuiz;
+  </script>
+</body>
+</html>
